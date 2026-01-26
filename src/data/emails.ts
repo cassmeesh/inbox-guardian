@@ -1,27 +1,28 @@
 import { Email, ActionConsequence } from '@/types/simulation';
 
 export const emails: Email[] = [
-  // Email 1: Legitimate - Internal IT Training
+  // Email 1: Legitimate - Internal IT Training via Microsoft Learn
   {
     id: '1',
     from: {
       name: 'IT Security Team',
-      email: 'security@acmeconsulting.com'
+      email: 'security@contosoconsulting.com'
     },
-    subject: 'Reminder: Complete Your Q4 Security Training',
-    preview: 'As part of our ongoing security awareness program, please complete your quarterly training...',
+    subject: 'Reminder: Complete Your Q4 Security Training in Microsoft Learn',
+    preview: 'As a Microsoft Inner Circle partner, we maintain strict security standards. Please complete your quarterly training...',
     body: `Hi Team,
 
-As part of our ongoing security awareness program, please complete your quarterly security training by the end of this month.
+As a Microsoft Inner Circle partner, we maintain strict security standards across our organization. Please complete your quarterly security training by the end of this month.
 
 The training covers:
-• Updated password policies
-• New phishing detection techniques  
+• Microsoft 365 security best practices
+• Conditional Access and MFA policies
+• Microsoft Defender threat detection
 • Incident reporting procedures
 
-Access the training portal here: https://training.acmeconsulting.com/security
+Access the training through Microsoft Learn: https://learn.microsoft.com/training/contoso-security
 
-If you have any questions, reach out to the IT Security team.
+If you have any questions, reach out to the IT Security team via Teams.
 
 Best regards,
 IT Security Team`,
@@ -29,7 +30,7 @@ IT Security Team`,
     isPhishing: false,
     urgency: 'normal',
     links: [
-      { text: 'training.acmeconsulting.com/security', url: 'https://training.acmeconsulting.com/security', isMalicious: false }
+      { text: 'learn.microsoft.com/training/contoso-security', url: 'https://learn.microsoft.com/training/contoso-security', isMalicious: false }
     ]
   },
 
@@ -37,27 +38,33 @@ IT Security Team`,
   {
     id: '2',
     from: {
-      name: 'Microsoft 365',
-      email: 'no-reply@m1crosoft-secure.net'
+      name: 'Microsoft 365 Admin',
+      email: 'admin@m1crosoft365-security.com'
     },
-    subject: 'URGENT: Your password expires in 2 hours',
+    subject: 'URGENT: Your Microsoft 365 password expires in 2 hours',
     preview: 'Your Microsoft 365 password will expire soon. Click here immediately to prevent account lockout...',
-    body: `Dear User,
+    body: `Microsoft 365 Security Alert
+
+Dear User,
 
 Your Microsoft 365 password will expire in 2 hours. To prevent being locked out of your account, you must update your password immediately.
 
 Click the link below to verify your identity and reset your password:
-→ https://m1crosoft-secure.net/password-reset
+→ https://m1crosoft365-security.com/password-reset
 
-If you do not take action, your account will be suspended and you will lose access to all Microsoft services including email, Teams, and OneDrive.
+If you do not take action, your account will be suspended and you will lose access to:
+• Outlook and Exchange Online
+• Microsoft Teams
+• SharePoint and OneDrive
+• All Microsoft 365 applications
 
 This is an automated security notification.
 
-Microsoft 365 Security Team`,
+Microsoft 365 Admin Center`,
     timestamp: '9:32 AM',
     isPhishing: true,
     phishingIndicators: [
-      'Suspicious domain (m1crosoft-secure.net instead of microsoft.com)',
+      'Suspicious domain (m1crosoft365-security.com instead of microsoft.com)',
       'Creates false urgency with countdown',
       'Threatens account suspension',
       'Generic greeting instead of your name'
@@ -65,30 +72,30 @@ Microsoft 365 Security Team`,
     urgency: 'high',
     timerSeconds: 30,
     links: [
-      { text: 'https://m1crosoft-secure.net/password-reset', url: 'https://m1crosoft-secure.net/password-reset', isMalicious: true }
+      { text: 'https://m1crosoft365-security.com/password-reset', url: 'https://m1crosoft365-security.com/password-reset', isMalicious: true }
     ]
   },
 
-  // Email 3: Legitimate - Project Update from Colleague
+  // Email 3: Legitimate - Teams Message about Dynamics 365 Project
   {
     id: '3',
     from: {
       name: 'Sarah Chen',
-      email: 'sarah.chen@acmeconsulting.com'
+      email: 'sarah.chen@contosoconsulting.com'
     },
-    subject: 'Project Update - Enterprise Dashboard for TechCorp',
-    preview: 'Hi! Quick update on the TechCorp dashboard project. The client approved the mockups and we\'re moving forward...',
+    subject: 'Project Update - Dynamics 365 Implementation for Northwind',
+    preview: 'Hi! Quick update on the Northwind D365 project. The client approved the solution design and we\'re moving forward...',
     body: `Hi!
 
-Quick update on the TechCorp dashboard project. The client approved the mockups yesterday and we're moving forward with development.
+Quick update on the Northwind Dynamics 365 Sales implementation. The client approved the solution design yesterday and we're moving to the build phase.
 
 Key milestones:
-• Design handoff: Completed ✓
-• Frontend development: Starting Monday
-• QA testing: Week of the 15th
-• Client demo: Week of the 22nd
+• Solution design: Approved ✓
+• Data migration from legacy CRM: Starting Monday
+• Power Automate workflows: Week of the 15th
+• UAT with client team: Week of the 22nd
 
-I've attached the final design specs for your reference. Let me know if you have any questions or concerns.
+I've shared the technical specs in our project SharePoint. Let me know if you have any questions - happy to jump on a Teams call.
 
 Thanks,
 Sarah`,
@@ -96,62 +103,65 @@ Sarah`,
     isPhishing: false,
     urgency: 'normal',
     attachments: [
-      { name: 'TechCorp_Dashboard_Specs.pdf', type: 'pdf' }
+      { name: 'Northwind_D365_Solution_Design.pdf', type: 'pdf' }
     ]
   },
 
-  // Email 4: Phishing - Fake Vendor Invoice (BEC Attack)
+  // Email 4: Phishing - Fake Azure Invoice
   {
     id: '4',
     from: {
-      name: 'AWS Billing',
-      email: 'billing@aws-invoices-payments.com'
+      name: 'Microsoft Azure Billing',
+      email: 'billing@azure-invoices-microsoft.com'
     },
-    subject: 'ACTION REQUIRED: Overdue Invoice #INV-2024-8847',
-    preview: 'Your AWS account has an overdue balance of $12,847.00. Immediate payment required to avoid service interruption...',
-    body: `AMAZON WEB SERVICES
+    subject: 'ACTION REQUIRED: Overdue Azure Invoice #AZR-2024-8847',
+    preview: 'Your Azure subscription has an overdue balance of $18,450.00. Immediate payment required to avoid service interruption...',
+    body: `MICROSOFT AZURE
 Invoice Notification
 
-Dear Valued Customer,
+Dear Valued Partner,
 
-Your AWS account has an overdue balance that requires immediate attention:
+Your Azure subscription has an overdue balance that requires immediate attention:
 
-Invoice #: INV-2024-8847
-Amount Due: $12,847.00
+Invoice #: AZR-2024-8847
+Amount Due: $18,450.00
 Due Date: PAST DUE
+Subscription: Contoso Consulting - Production
 
-Your services will be suspended within 24 hours if payment is not received.
+Your Azure services will be suspended within 24 hours if payment is not received. This includes:
+• All Azure VMs and App Services
+• Azure SQL Databases
+• Azure Active Directory Premium
+• Microsoft 365 integrations
 
 To avoid service interruption, please process payment immediately:
-[PAY NOW] https://aws-invoices-payments.com/pay/8847
+[PAY NOW] https://azure-invoices-microsoft.com/pay/8847
 
-If you believe this is an error, contact our billing department.
-
-AWS Billing Team`,
+Microsoft Azure Billing Team`,
     timestamp: '10:28 AM',
     isPhishing: true,
     phishingIndicators: [
-      'Domain is aws-invoices-payments.com not amazon.com or aws.amazon.com',
+      'Domain is azure-invoices-microsoft.com not microsoft.com or azure.microsoft.com',
       'Threatens immediate service suspension',
-      'No specific account details or reference to your actual AWS account',
+      'No link to actual Azure portal',
       'Unusually high urgency for a billing matter'
     ],
     urgency: 'high',
     timerSeconds: 25,
     links: [
-      { text: 'PAY NOW', url: 'https://aws-invoices-payments.com/pay/8847', isMalicious: true }
+      { text: 'PAY NOW', url: 'https://azure-invoices-microsoft.com/pay/8847', isMalicious: true }
     ]
   },
 
-  // Email 5: Legitimate - HR Benefits Enrollment
+  // Email 5: Legitimate - HR Benefits via Microsoft Viva
   {
     id: '5',
     from: {
       name: 'HR Department',
-      email: 'hr-notifications@acmeconsulting.com'
+      email: 'hr@contosoconsulting.com'
     },
-    subject: 'Updated: Employee Benefits Open Enrollment',
-    preview: 'Open enrollment for 2025 benefits begins November 1st. Review the attached guide for changes...',
+    subject: 'Updated: Employee Benefits Open Enrollment - Access via Viva',
+    preview: 'Open enrollment for 2025 benefits begins November 1st. Review details in Microsoft Viva Connections...',
     body: `Dear Team,
 
 Open enrollment for 2025 employee benefits begins November 1st and runs through November 15th.
@@ -159,12 +169,12 @@ Open enrollment for 2025 employee benefits begins November 1st and runs through 
 Key changes for 2025:
 • New vision coverage options
 • Increased HSA contribution limits
-• Enhanced mental health benefits
+• Enhanced mental health benefits through Microsoft Viva Insights
 • Updated dental network
 
-Please review the attached Benefits Guide for complete details. You can make changes through the HR portal at hr.acmeconsulting.com.
+Access the Benefits Hub through Microsoft Viva Connections on your Teams dashboard, or visit our SharePoint HR portal.
 
-Questions? Contact the HR team at hr@acmeconsulting.com or extension 4500.
+Questions? Reach out to the HR team via Teams at hr@contosoconsulting.com.
 
 Human Resources Department`,
     timestamp: '10:45 AM',
@@ -175,186 +185,208 @@ Human Resources Department`,
     ]
   },
 
-  // Email 6: Phishing - Fake DocuSign from "CEO"
+  // Email 6: Phishing - Fake SharePoint Document from "CEO"
   {
     id: '6',
     from: {
-      name: 'DocuSign',
-      email: 'notification@docusign-secure.com'
+      name: 'SharePoint Online',
+      email: 'noreply@sharepoint-docs-secure.com'
     },
-    subject: 'Complete required: Consulting Agreement - Urgent',
-    preview: 'David Mitchell (CEO) has requested your signature on a consulting agreement. Please review immediately...',
-    body: `DOCUSIGN
+    subject: 'Michael Torres shared "Q4 Partner Bonus Structure.xlsx" with you',
+    preview: 'Michael Torres (CEO) has shared a confidential document with you. Please review the updated partner compensation...',
+    body: `SharePoint Online
 
-You have received a document for electronic signature from: 
-David Mitchell, CEO - ACME Consulting
+Michael Torres has shared a file with you.
 
-Document: Consulting_Services_Agreement_Confidential.pdf
+Q4 Partner Bonus Structure.xlsx
+"Please review the updated partner bonus structure for Q4. This is confidential - do not forward."
 
-This document requires your immediate signature. The CEO has marked this as time-sensitive for a new client engagement.
+Michael Torres
+CEO, Contoso Consulting
 
-REVIEW DOCUMENT: https://docusign-secure.com/sign/9k3m2x
+This document contains sensitive compensation information. Click below to access:
 
-This message was sent by DocuSign. Please do not reply directly.`,
+[OPEN IN SHAREPOINT] https://sharepoint-docs-secure.com/sites/executive/bonus-q4
+
+Note: This link will expire in 24 hours for security purposes.`,
     timestamp: '11:02 AM',
     isPhishing: true,
     phishingIndicators: [
-      'Domain is docusign-secure.com not docusign.com',
-      'Creates urgency by referencing CEO authority',
-      'Unexpected document you weren\'t expecting',
-      'Vague "confidential" document details'
+      'Domain is sharepoint-docs-secure.com not sharepoint.com',
+      'Creates urgency with expiration and confidentiality',
+      'Unexpected compensation document you weren\'t expecting',
+      'CEO sharing directly rather than through normal channels'
     ],
     urgency: 'high',
     timerSeconds: 28,
     links: [
-      { text: 'REVIEW DOCUMENT', url: 'https://docusign-secure.com/sign/9k3m2x', isMalicious: true }
+      { text: 'OPEN IN SHAREPOINT', url: 'https://sharepoint-docs-secure.com/sites/executive/bonus-q4', isMalicious: true }
     ]
   },
 
-  // Email 7: Legitimate - Client Follow-up
+  // Email 7: Legitimate - Partner Center Notification
   {
     id: '7',
     from: {
-      name: 'Marcus Johnson',
-      email: 'mjohnson@innovatech-solutions.com'
+      name: 'Microsoft Partner Center',
+      email: 'noreply@microsoft.com'
     },
-    subject: 'Re: Software Integration Proposal Follow-up',
-    preview: 'Thanks for the detailed proposal. Our technical team reviewed it and has a few questions about the API integration...',
-    body: `Hi,
+    subject: 'Your Microsoft Partner Incentives Summary - October 2024',
+    preview: 'Your monthly partner incentives summary is ready. View your earnings and upcoming opportunities...',
+    body: `Microsoft Partner Center
 
-Thanks for the detailed proposal for our CRM integration project. Our technical team reviewed it and has some follow-up questions:
+Hi,
 
-1. API rate limits - Can we get clarification on the expected call volumes?
-2. Data migration - What's the estimated timeline for the legacy data transfer?
-3. Training - Do you offer on-site training sessions for our team?
+Your October 2024 Partner Incentives summary is now available.
 
-I've attached our technical requirements document for reference. Can we schedule a call for Thursday afternoon to discuss?
+Summary:
+• Total Earned: $24,500
+• Pending Validation: $8,200
+• New Opportunities: 3
 
-Best regards,
-Marcus Johnson
-VP of Technology
-InnovaTech Solutions`,
+Top Earning Categories:
+1. Azure Consumed Revenue - $12,400
+2. Modern Work Deployments - $7,800
+3. Business Applications - $4,300
+
+View your complete incentives dashboard:
+https://partner.microsoft.com/dashboard/incentives
+
+New Inner Circle Opportunity:
+You've been nominated for the Azure Advanced Specialization assessment. Review details in Partner Center.
+
+Microsoft Partner Team`,
     timestamp: '11:45 AM',
     isPhishing: false,
     urgency: 'normal',
-    attachments: [
-      { name: 'InnovaTech_Technical_Requirements.pdf', type: 'pdf' }
+    links: [
+      { text: 'partner.microsoft.com/dashboard/incentives', url: 'https://partner.microsoft.com/dashboard/incentives', isMalicious: false }
     ]
   },
 
-  // Email 8: Phishing - Fake Zoom Recording (Client Impersonation)
+  // Email 8: Phishing - Fake Teams Meeting Recording
   {
     id: '8',
     from: {
-      name: 'Zoom Recordings',
-      email: 'noreply@zoom-cloud-recordings.net'
+      name: 'Microsoft Teams',
+      email: 'noreply@teams-recordings-cloud.net'
     },
-    subject: 'New Recording: Sales Demo - GlobalTech Enterprise',
-    preview: 'Your meeting recording is ready. Client: GlobalTech Enterprise - Q4 Sales Presentation...',
-    body: `Zoom Cloud Recordings
+    subject: 'New Recording: Azure Migration Planning - Adventure Works',
+    preview: 'Your Teams meeting recording is ready. Client: Adventure Works - Azure Infrastructure Review...',
+    body: `Microsoft Teams
 
-A new cloud recording is available from your recent meeting:
+A new meeting recording is available:
 
-Meeting: Sales Demo - GlobalTech Enterprise
+Meeting: Azure Migration Planning - Adventure Works
 Date: Today
-Duration: 47 minutes
-Host: You
+Duration: 52 minutes
+Organizer: You
 
-The client has requested access to this recording for their procurement team review.
+The client has requested access to this recording for their IT leadership team review.
 
-DOWNLOAD RECORDING: https://zoom-cloud-recordings.net/rec/globaltech-demo
+Recording includes:
+• Azure architecture discussion
+• Migration timeline review
+• Cost optimization strategies
 
-This recording will expire in 7 days.
+[VIEW RECORDING] https://teams-recordings-cloud.net/rec/adventure-works
 
-- Zoom Team`,
+This recording will be available for 21 days per your organization's retention policy.
+
+Microsoft Teams`,
     timestamp: '1:15 PM',
     isPhishing: true,
     phishingIndicators: [
-      'Domain is zoom-cloud-recordings.net not zoom.us',
+      'Domain is teams-recordings-cloud.net not microsoft.com',
       'References a meeting you may not have had',
-      'Creates urgency with expiration',
-      'No meeting ID or specific details'
+      'Legitimate Teams recordings are accessed via Microsoft Stream or Teams directly',
+      'No meeting ID or specific attendee details'
     ],
     urgency: 'normal',
     links: [
-      { text: 'DOWNLOAD RECORDING', url: 'https://zoom-cloud-recordings.net/rec/globaltech-demo', isMalicious: true }
+      { text: 'VIEW RECORDING', url: 'https://teams-recordings-cloud.net/rec/adventure-works', isMalicious: true }
     ]
   },
 
-  // Email 9: Legitimate - Salesforce Notification
+  // Email 9: Legitimate - Power Platform CoE Update
   {
     id: '9',
     from: {
-      name: 'Salesforce',
-      email: 'noreply@salesforce.com'
+      name: 'Power Platform CoE',
+      email: 'powerplatform-coe@contosoconsulting.com'
     },
-    subject: 'Opportunity Update: TechStart Inc - Enterprise License',
-    preview: 'An opportunity you\'re tracking has been updated. TechStart Inc has moved to Proposal stage...',
-    body: `Salesforce Notification
+    subject: 'New Power Apps Template Available - Customer Onboarding Solution',
+    preview: 'The CoE team has published a new reusable Power Apps template for customer onboarding workflows...',
+    body: `Power Platform Center of Excellence
 
-An opportunity you're following has been updated:
+Hi Team,
 
-Opportunity: TechStart Inc - Enterprise License Deal
-Stage Changed: Negotiation → Proposal
-Amount: $185,000
-Close Date: December 15, 2024
+We've published a new reusable solution in our internal template gallery:
 
-Recent Activity:
-• Proposal sent to procurement team
-• Technical review completed
-• Next step: Contract negotiation call scheduled
+Customer Onboarding Accelerator
+• Power Apps canvas app for intake forms
+• Power Automate flows for approval routing
+• Dataverse tables for customer data
+• Power BI dashboard for onboarding metrics
 
-View full details in Salesforce:
-https://acmeconsulting.my.salesforce.com/opportunities/techstart-enterprise
+This solution is pre-configured for Dynamics 365 integration and can reduce customer onboarding implementation time by 40%.
 
-This is an automated notification based on your follow settings.`,
+Access the template in our CoE SharePoint:
+https://contosoconsulting.sharepoint.com/sites/PowerPlatformCoE/templates
+
+Training session scheduled for Friday at 2 PM - Teams invite sent separately.
+
+Power Platform CoE Team`,
     timestamp: '2:30 PM',
     isPhishing: false,
     urgency: 'normal',
     links: [
-      { text: 'View in Salesforce', url: 'https://acmeconsulting.my.salesforce.com/opportunities/techstart-enterprise', isMalicious: false }
+      { text: 'CoE SharePoint', url: 'https://contosoconsulting.sharepoint.com/sites/PowerPlatformCoE/templates', isMalicious: false }
     ]
   },
 
-  // Email 10: Phishing - Fake LinkedIn Recruiter Message
+  // Email 10: Phishing - Fake Microsoft Partner Support
   {
     id: '10',
     from: {
-      name: 'LinkedIn',
-      email: 'messages@linkedin-notifications.info'
+      name: 'Microsoft Partner Support',
+      email: 'support@microsoft-partner-help.info'
     },
-    subject: 'A recruiter at Google is interested in your profile',
-    preview: 'Hi, I came across your profile and was impressed by your experience. We have an exciting Senior Consultant role...',
-    body: `LinkedIn
+    subject: 'URGENT: Your Partner Center Access Requires Verification',
+    preview: 'Your Microsoft Partner Center account has been flagged for security review. Verify your identity to maintain access...',
+    body: `Microsoft Partner Support
 
-You have a new message from Sarah Williams
-Senior Technical Recruiter at Google
+IMPORTANT: Security Verification Required
 
-"Hi,
+Dear Partner,
 
-I came across your profile and was very impressed by your consulting experience. We have an exciting opportunity for a Senior Solutions Consultant role at Google Cloud.
+Your Microsoft Partner Center account has been flagged during a routine security audit. To maintain your Inner Circle partner status and avoid disruption to your benefits, please verify your identity immediately.
 
-The role offers:
-• Competitive salary ($180K - $240K)
-• Remote flexibility
-• Excellent benefits package
+Affected services if not verified:
+• Partner Center dashboard access
+• Azure partner credits
+• Microsoft 365 licensing portal
+• Partner incentives payments
+• Co-sell opportunities
 
-I'd love to schedule a quick call to discuss. Please click below to view the full job description and schedule a time that works for you."
+Complete verification within 48 hours:
+[VERIFY PARTNER ACCOUNT] https://microsoft-partner-help.info/verify/account
 
-VIEW OPPORTUNITY: https://linkedin-notifications.info/jobs/google-consultant
+Failure to verify may result in temporary suspension of partner benefits.
 
-Reply to this message on LinkedIn.`,
+Microsoft Partner Support Team`,
     timestamp: '3:45 PM',
     isPhishing: true,
     phishingIndicators: [
-      'Domain is linkedin-notifications.info not linkedin.com',
-      'Too-good-to-be-true salary offer',
-      'Unsolicited job opportunity from unknown recruiter',
-      'Generic praise without specific details about your background'
+      'Domain is microsoft-partner-help.info not microsoft.com',
+      'Threatens partner status suspension to create urgency',
+      'Unexpected security verification not communicated through Partner Center',
+      'Generic "Dear Partner" instead of your organization name'
     ],
-    urgency: 'normal',
+    urgency: 'high',
+    timerSeconds: 30,
     links: [
-      { text: 'VIEW OPPORTUNITY', url: 'https://linkedin-notifications.info/jobs/google-consultant', isMalicious: true }
+      { text: 'VERIFY PARTNER ACCOUNT', url: 'https://microsoft-partner-help.info/verify/account', isMalicious: true }
     ]
   }
 ];
@@ -364,7 +396,7 @@ export const emailConsequences: Record<string, ActionConsequence> = {
   '1': {
     open: {
       title: 'Legitimate Email Opened',
-      description: 'This was a genuine internal communication from IT Security. Opening it was appropriate.',
+      description: 'This was a genuine internal communication from IT Security linking to Microsoft Learn. Opening it was appropriate.',
       riskChange: 0,
       isPositive: true
     },
@@ -382,7 +414,7 @@ export const emailConsequences: Record<string, ActionConsequence> = {
     },
     ignore: {
       title: 'Email Left Unread',
-      description: 'This was a legitimate training reminder that may contain time-sensitive information.',
+      description: 'This was a legitimate training reminder that may contain time-sensitive compliance requirements.',
       riskChange: 1,
       isPositive: false
     }
@@ -392,13 +424,13 @@ export const emailConsequences: Record<string, ActionConsequence> = {
   '2': {
     open: {
       title: 'Phishing Link Clicked',
-      description: 'This was a phishing attempt. The domain "m1crosoft-secure.net" is not Microsoft. Clicking could have exposed your credentials to attackers.',
+      description: 'This was a phishing attempt. The domain "m1crosoft365-security.com" is not Microsoft. Real Microsoft password notifications come from microsoft.com domains.',
       riskChange: 25,
       isPositive: false
     },
     report: {
       title: 'Phishing Attempt Reported',
-      description: 'Excellent! You identified the suspicious domain and urgency tactics. Reporting helps protect the entire organization.',
+      description: 'Excellent! You identified the suspicious domain. Microsoft never sends password reset links from non-microsoft.com domains.',
       riskChange: -5,
       isPositive: true
     },
@@ -416,17 +448,17 @@ export const emailConsequences: Record<string, ActionConsequence> = {
     }
   },
 
-  // Email 3: Legitimate - Project Update
+  // Email 3: Legitimate - D365 Project Update
   '3': {
     open: {
       title: 'Internal Update Reviewed',
-      description: 'This was a legitimate project update from your colleague. Staying informed on project status is valuable.',
+      description: 'This was a legitimate Dynamics 365 project update from your colleague. Staying informed on client implementations is valuable.',
       riskChange: 0,
       isPositive: true
     },
     report: {
       title: 'Colleague\'s Email Reported',
-      description: 'This was a legitimate internal email. Misreporting colleague communications creates unnecessary friction.',
+      description: 'This was a legitimate internal email about a Dynamics 365 project. Misreporting colleague communications creates unnecessary friction.',
       riskChange: 3,
       isPositive: false
     },
@@ -444,23 +476,23 @@ export const emailConsequences: Record<string, ActionConsequence> = {
     }
   },
 
-  // Email 4: Phishing - Fake AWS Invoice
+  // Email 4: Phishing - Fake Azure Invoice
   '4': {
     open: {
-      title: 'Fake Invoice Link Clicked',
-      description: 'This was a Business Email Compromise (BEC) attack. The domain "aws-invoices-payments.com" is not affiliated with AWS. Always verify unexpected invoices through official channels.',
+      title: 'Fake Azure Invoice Clicked',
+      description: 'This was a Business Email Compromise attack. The domain "azure-invoices-microsoft.com" is not Microsoft. Real Azure billing comes through the Azure Portal or microsoft.com domains.',
       riskChange: 28,
       isPositive: false
     },
     report: {
-      title: 'Invoice Scam Reported',
-      description: 'Great catch! Fake vendor invoices are a common attack vector. You correctly identified the suspicious domain and urgency tactics.',
+      title: 'Azure Invoice Scam Reported',
+      description: 'Great catch! Fake Azure invoices target Microsoft partners frequently. You correctly identified the suspicious domain.',
       riskChange: -5,
       isPositive: true
     },
     delete: {
       title: 'Fake Invoice Deleted',
-      description: 'Good instinct to avoid it. Reporting would have been even better to alert the security team about this invoice fraud attempt.',
+      description: 'Good instinct. Always verify Azure billing through the official Azure Portal. Reporting would also help the security team.',
       riskChange: 0,
       isPositive: true
     },
@@ -472,11 +504,11 @@ export const emailConsequences: Record<string, ActionConsequence> = {
     }
   },
 
-  // Email 5: Legitimate - HR Benefits
+  // Email 5: Legitimate - HR Benefits via Viva
   '5': {
     open: {
       title: 'HR Communication Reviewed',
-      description: 'This was a legitimate HR notification about benefits enrollment. Important to stay informed about these deadlines.',
+      description: 'This was a legitimate HR notification about benefits enrollment accessible through Microsoft Viva. Important to stay informed.',
       riskChange: 0,
       isPositive: true
     },
@@ -500,141 +532,141 @@ export const emailConsequences: Record<string, ActionConsequence> = {
     }
   },
 
-  // Email 6: Phishing - Fake DocuSign CEO
+  // Email 6: Phishing - Fake SharePoint CEO Share
   '6': {
     open: {
-      title: 'Fraudulent DocuSign Clicked',
-      description: 'This was a CEO impersonation phishing attack. The real DocuSign domain is docusign.com, not docusign-secure.com. Attackers often use executive authority to pressure quick action.',
-      riskChange: 22,
+      title: 'Fraudulent SharePoint Link Clicked',
+      description: 'This was a CEO impersonation attack. The domain "sharepoint-docs-secure.com" is not Microsoft. Real SharePoint shares come from sharepoint.com or your tenant domain.',
+      riskChange: 24,
       isPositive: false
     },
     report: {
-      title: 'DocuSign Phishing Reported',
-      description: 'Great catch! You recognized the suspicious domain and the CEO impersonation tactic. This helps protect the entire organization.',
+      title: 'SharePoint Phishing Reported',
+      description: 'Great catch! You recognized the fake domain and CEO impersonation tactic. Legitimate SharePoint shares use your organization\'s tenant URL.',
       riskChange: -5,
       isPositive: true
     },
     delete: {
-      title: 'Suspicious DocuSign Deleted',
+      title: 'Suspicious SharePoint Email Deleted',
       description: 'Good instinct. Reporting it would have been even better to alert security about this CEO impersonation attempt.',
       riskChange: 0,
       isPositive: true
     },
     ignore: {
       title: 'Phishing Left in Inbox',
-      description: 'This phishing attempt using CEO impersonation remains a risk. Reporting it would help protect colleagues.',
+      description: 'This CEO impersonation attack remains a risk. Reporting it would help protect colleagues.',
       riskChange: 5,
       isPositive: false
     }
   },
 
-  // Email 7: Legitimate - Client Follow-up
+  // Email 7: Legitimate - Partner Center
   '7': {
     open: {
-      title: 'Client Email Reviewed',
-      description: 'This was a legitimate client communication about an active proposal. Responding promptly to client questions is good practice.',
+      title: 'Partner Center Update Reviewed',
+      description: 'This was a legitimate Microsoft Partner Center notification from microsoft.com. Staying informed on partner incentives is valuable.',
       riskChange: 0,
       isPositive: true
     },
     report: {
-      title: 'Client Email Reported',
-      description: 'This was a legitimate external client communication. While external emails warrant scrutiny, this one was genuine.',
+      title: 'Partner Center Email Reported',
+      description: 'This was a legitimate notification from Microsoft Partner Center. The noreply@microsoft.com domain is genuine.',
       riskChange: 2,
       isPositive: false
     },
     delete: {
-      title: 'Client Communication Deleted',
-      description: 'This was a legitimate client email with important project questions that require follow-up.',
+      title: 'Partner Update Deleted',
+      description: 'This was a legitimate partner incentives summary. You may miss important earnings and opportunities information.',
       riskChange: 1,
       isPositive: false
     },
     ignore: {
       title: 'Email Saved for Later',
-      description: 'This was a legitimate client communication. You can review and respond when you have time.',
+      description: 'This was a legitimate Partner Center notification. You can review your incentives when convenient.',
       riskChange: 0,
       isPositive: true
     }
   },
 
-  // Email 8: Phishing - Fake Zoom Recording
+  // Email 8: Phishing - Fake Teams Recording
   '8': {
     open: {
-      title: 'Fake Zoom Link Clicked',
-      description: 'This was a phishing attempt impersonating Zoom. The domain "zoom-cloud-recordings.net" is not affiliated with Zoom. Attackers often use fake meeting recordings to steal credentials.',
+      title: 'Fake Teams Recording Clicked',
+      description: 'This was a phishing attempt. The domain "teams-recordings-cloud.net" is not Microsoft. Real Teams recordings are accessed through Microsoft Stream or directly in Teams.',
       riskChange: 20,
       isPositive: false
     },
     report: {
-      title: 'Zoom Phishing Reported',
-      description: 'Well done! You recognized the fake domain. Fake meeting/recording notifications are common phishing tactics targeting sales teams.',
+      title: 'Teams Phishing Reported',
+      description: 'Well done! You recognized the fake domain. Legitimate Teams recordings are stored in SharePoint/OneDrive and accessed through Teams or Stream.',
       riskChange: -5,
       isPositive: true
     },
     delete: {
-      title: 'Suspicious Zoom Email Deleted',
+      title: 'Suspicious Teams Email Deleted',
       description: 'Good instinct to avoid it. Reporting would have helped the security team warn others about this tactic.',
       riskChange: 0,
       isPositive: true
     },
     ignore: {
       title: 'Phishing Left Unaddressed',
-      description: 'The fake Zoom recording email remains a threat. Reporting helps protect colleagues who may receive similar messages.',
+      description: 'The fake Teams recording email remains a threat. Reporting helps protect colleagues who may receive similar messages.',
       riskChange: 5,
       isPositive: false
     }
   },
 
-  // Email 9: Legitimate - Salesforce Notification
+  // Email 9: Legitimate - Power Platform CoE
   '9': {
     open: {
-      title: 'Salesforce Update Reviewed',
-      description: 'This was a legitimate Salesforce notification about an opportunity update. Staying informed on deal progress is valuable.',
+      title: 'CoE Update Reviewed',
+      description: 'This was a legitimate internal communication about Power Platform templates. Staying informed on reusable solutions improves project efficiency.',
       riskChange: 0,
       isPositive: true
     },
     report: {
-      title: 'Salesforce Email Reported',
-      description: 'This was a legitimate automated notification from Salesforce. The domain salesforce.com is genuine.',
+      title: 'Internal Email Reported',
+      description: 'This was a legitimate Power Platform CoE communication using your organization\'s SharePoint domain.',
       riskChange: 2,
       isPositive: false
     },
     delete: {
-      title: 'Opportunity Update Deleted',
-      description: 'This was a legitimate sales update. You may miss important deal status changes.',
+      title: 'CoE Update Deleted',
+      description: 'This was a legitimate internal resource. You may miss valuable templates that could accelerate client projects.',
       riskChange: 1,
       isPositive: false
     },
     ignore: {
       title: 'Update Saved for Later',
-      description: 'This was a legitimate notification. You can review the opportunity details when convenient.',
+      description: 'This was a legitimate notification. You can review the Power Apps templates when you have time.',
       riskChange: 0,
       isPositive: true
     }
   },
 
-  // Email 10: Phishing - Fake LinkedIn Recruiter
+  // Email 10: Phishing - Fake Partner Support
   '10': {
     open: {
-      title: 'Fake LinkedIn Link Clicked',
-      description: 'This was a phishing attempt. The domain "linkedin-notifications.info" is not LinkedIn. Fake job offers with attractive salaries are common social engineering tactics.',
-      riskChange: 18,
+      title: 'Fake Partner Support Clicked',
+      description: 'This was a phishing attempt targeting Microsoft partners. The domain "microsoft-partner-help.info" is not Microsoft. Partner Center communications come from microsoft.com.',
+      riskChange: 22,
       isPositive: false
     },
     report: {
-      title: 'LinkedIn Phishing Reported',
-      description: 'Excellent! You recognized the suspicious domain and too-good-to-be-true job offer. Reporting protects colleagues from similar scams.',
+      title: 'Partner Phishing Reported',
+      description: 'Excellent! You recognized the suspicious domain and threat tactics. Microsoft Partner communications always come from microsoft.com domains.',
       riskChange: -5,
       isPositive: true
     },
     delete: {
-      title: 'Fake Job Offer Deleted',
-      description: 'Good judgment. The suspicious domain and unsolicited high-paying offer were red flags. Reporting would also help others.',
+      title: 'Fake Partner Email Deleted',
+      description: 'Good judgment. The suspicious domain and urgency tactics were red flags. Reporting would also help protect other partners.',
       riskChange: 0,
       isPositive: true
     },
     ignore: {
       title: 'Phishing Left in Inbox',
-      description: 'While you avoided the trap, this fake recruiter scam could target others. Reporting helps the security team.',
+      description: 'While you avoided the trap, this partner-targeted scam could affect others. Reporting helps the security team.',
       riskChange: 5,
       isPositive: false
     }
