@@ -62,13 +62,19 @@ export function InboxScreen({
   const handleContinue = () => {
     setFeedback(null);
     
+    // The current email was just completed, so we need to count it
+    const currentEmailId = selectedEmail?.id;
+    const updatedCompletedEmails = currentEmailId 
+      ? [...completedEmails, currentEmailId]
+      : completedEmails;
+    
     // Find next incomplete email
     const nextIncomplete = emails.findIndex(
-      email => !completedEmails.includes(email.id) && email.id !== selectedEmail?.id
+      email => !updatedCompletedEmails.includes(email.id)
     );
     
     if (nextIncomplete === -1) {
-      // All emails completed
+      // All emails completed - go to summary
       onNext();
     } else {
       setSelectedEmail(emails[nextIncomplete]);
