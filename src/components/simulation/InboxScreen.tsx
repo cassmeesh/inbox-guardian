@@ -64,17 +64,31 @@ export function InboxScreen({
     
     // The current email was just completed, so we need to count it
     const currentEmailId = selectedEmail?.id;
-    const updatedCompletedEmails = currentEmailId 
+    
+    // Check if current email is already in completedEmails (state may have updated)
+    const isCurrentAlreadyCompleted = currentEmailId && completedEmails.includes(currentEmailId);
+    
+    const updatedCompletedEmails = (currentEmailId && !isCurrentAlreadyCompleted)
       ? [...completedEmails, currentEmailId]
       : completedEmails;
+    
+    console.log('handleContinue:', {
+      currentEmailId,
+      completedEmails: completedEmails.length,
+      updatedCompletedEmails: updatedCompletedEmails.length,
+      totalEmails: emails.length
+    });
     
     // Find next incomplete email
     const nextIncomplete = emails.findIndex(
       email => !updatedCompletedEmails.includes(email.id)
     );
     
-    if (nextIncomplete === -1) {
+    console.log('Next incomplete index:', nextIncomplete);
+    
+    if (nextIncomplete === -1 || updatedCompletedEmails.length >= emails.length) {
       // All emails completed - go to summary
+      console.log('All emails completed, calling onNext');
       onNext();
     } else {
       setSelectedEmail(emails[nextIncomplete]);

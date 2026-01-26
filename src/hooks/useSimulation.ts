@@ -120,10 +120,12 @@ export function useSimulation() {
 
   const nextEmail = useCallback(() => {
     setState(prev => {
-      const nextIndex = prev.currentEmailIndex + 1;
-      if (nextIndex >= emails.length) {
+      // Check if all emails have been completed
+      if (prev.completedEmails.length >= emails.length) {
         return { ...prev, phase: 'summary' };
       }
+      // Otherwise just increment the index (though this may not be used)
+      const nextIndex = prev.currentEmailIndex + 1;
       return { ...prev, currentEmailIndex: nextIndex };
     });
   }, []);
