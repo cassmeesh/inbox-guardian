@@ -67,36 +67,26 @@ export function InboxScreen({
   const handleContinue = () => {
     setFeedback(null);
     
-    // The current email was just completed, so we need to count it
+    // The current email was just completed via onAction, which already added it to completedEmails
+    // But the prop may be stale, so we need to account for the current email
     const currentEmailId = selectedEmail?.id;
     
-    // Check if current email is already in completedEmails (state may have updated)
-    const isCurrentAlreadyCompleted = currentEmailId && completedEmails.includes(currentEmailId);
-    
-    const updatedCompletedEmails = (currentEmailId && !isCurrentAlreadyCompleted)
-      ? [...completedEmails, currentEmailId]
-      : completedEmails;
-    
-    console.log('handleContinue:', {
-      currentEmailId,
-      completedEmails: completedEmails.length,
-      updatedCompletedEmails: updatedCompletedEmails.length,
-      totalEmails: emails.length
-    });
+    // Build the true list of completed emails (including current one that was just actioned)
+    const actualCompletedSet = new Set(completedEmails);
+    if (currentEmailId) {
+      actualCompletedSet.add(currentEmailId);
+    }
     
     // Find next incomplete email
-    const nextIncomplete = emails.findIndex(
-      email => !updatedCompletedEmails.includes(email.id)
+    const nextIncomplete = emails.find(
+      email => !actualCompletedSet.has(email.id)
     );
     
-    console.log('Next incomplete index:', nextIncomplete);
-    
-    if (nextIncomplete === -1 || updatedCompletedEmails.length >= emails.length) {
+    if (!nextIncomplete || actualCompletedSet.size >= emails.length) {
       // All emails completed - go to summary
-      console.log('All emails completed, calling onNext');
       onNext();
     } else {
-      setSelectedEmail(emails[nextIncomplete]);
+      setSelectedEmail(nextIncomplete);
     }
   };
 
