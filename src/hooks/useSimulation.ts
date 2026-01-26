@@ -126,8 +126,16 @@ export function useSimulation() {
 
   const nextEmail = useCallback(() => {
     setState(prev => {
+      console.log('[nextEmail] Called with state:', {
+        completedEmails: prev.completedEmails,
+        completedCount: prev.completedEmails.length,
+        totalEmails: emails.length,
+        currentPhase: prev.phase
+      });
+      
       // Check if all emails have been completed
       if (prev.completedEmails.length >= emails.length) {
+        console.log('[nextEmail] All emails completed, transitioning to summary');
         return { ...prev, phase: 'summary' };
       }
       
@@ -136,11 +144,15 @@ export function useSimulation() {
         email => !prev.completedEmails.includes(email.id)
       );
       
+      console.log('[nextEmail] Next incomplete index:', nextIncompleteIndex);
+      
       if (nextIncompleteIndex === -1) {
         // No incomplete emails - go to summary
+        console.log('[nextEmail] No incomplete emails found, transitioning to summary');
         return { ...prev, phase: 'summary' };
       }
       
+      console.log('[nextEmail] Moving to email index:', nextIncompleteIndex);
       return { ...prev, currentEmailIndex: nextIncompleteIndex };
     });
   }, []);
