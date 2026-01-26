@@ -1,5 +1,6 @@
-import { SummaryData } from '@/types/simulation';
+import { SummaryData, Designation } from '@/types/simulation';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 import { 
   Shield, 
   ShieldAlert, 
@@ -7,7 +8,12 @@ import {
   CheckCircle, 
   AlertTriangle,
   RotateCcw,
-  TrendingUp
+  TrendingUp,
+  Award,
+  Star,
+  Eye,
+  BookOpen,
+  Target
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -47,27 +53,99 @@ const riskConfig = {
   }
 };
 
+const designationConfig: Record<Designation, {
+  title: string;
+  description: string;
+  icon: typeof Award;
+  color: string;
+  bgColor: string;
+  borderColor: string;
+}> = {
+  'security-champion': {
+    title: 'Security Champion',
+    description: 'Exceptional awareness and judgment. You\'re a model for security-conscious behavior.',
+    icon: Award,
+    color: 'text-yellow-500',
+    bgColor: 'bg-yellow-500/10',
+    borderColor: 'border-yellow-500/30'
+  },
+  'vigilant-defender': {
+    title: 'Vigilant Defender',
+    description: 'Strong security instincts. You consistently make safe choices under pressure.',
+    icon: Shield,
+    color: 'text-emerald-500',
+    bgColor: 'bg-emerald-500/10',
+    borderColor: 'border-emerald-500/30'
+  },
+  'aware-employee': {
+    title: 'Aware Employee',
+    description: 'Solid foundation in security awareness. Continue building on these skills.',
+    icon: Eye,
+    color: 'text-blue-500',
+    bgColor: 'bg-blue-500/10',
+    borderColor: 'border-blue-500/30'
+  },
+  'developing-awareness': {
+    title: 'Developing Awareness',
+    description: 'You\'re learning to spot threats. Focus on verifying sender details and links.',
+    icon: Target,
+    color: 'text-orange-500',
+    bgColor: 'bg-orange-500/10',
+    borderColor: 'border-orange-500/30'
+  },
+  'needs-training': {
+    title: 'Training Recommended',
+    description: 'Additional practice will help strengthen your threat recognition skills.',
+    icon: BookOpen,
+    color: 'text-red-400',
+    bgColor: 'bg-red-500/10',
+    borderColor: 'border-red-500/30'
+  }
+};
+
 export function SummaryScreen({ data, onRestart }: SummaryScreenProps) {
   const config = riskConfig[data.finalRiskLevel];
   const Icon = config.icon;
+  const designation = designationConfig[data.designation];
+  const DesignationIcon = designation.icon;
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
       <div className="max-w-2xl w-full fade-in">
-        {/* Header */}
+        {/* Designation Header */}
         <div className="text-center mb-8">
           <div className={cn(
-            "inline-flex items-center justify-center w-20 h-20 rounded-full mb-4",
-            config.bgColor
+            "inline-flex items-center justify-center w-24 h-24 rounded-full mb-4 border-2",
+            designation.bgColor,
+            designation.borderColor
           )}>
-            <Icon className={cn("w-10 h-10", config.color)} />
+            <DesignationIcon className={cn("w-12 h-12", designation.color)} />
           </div>
+          <Badge className={cn("mb-3 px-4 py-1 text-sm", designation.bgColor, designation.color, "border", designation.borderColor)}>
+            {designation.title}
+          </Badge>
           <h1 className="text-2xl md:text-3xl font-bold text-foreground mb-2">
             Simulation Complete
           </h1>
-          <p className="text-muted-foreground">
-            Your Security Snapshot
+          <p className="text-muted-foreground max-w-md mx-auto">
+            {designation.description}
           </p>
+        </div>
+
+        {/* Score Card */}
+        <div className={cn(
+          "rounded-xl border-2 p-6 mb-6 text-center",
+          designation.bgColor,
+          designation.borderColor
+        )}>
+          <p className="text-sm text-muted-foreground mb-2">Your Score</p>
+          <div className="flex items-center justify-center gap-2">
+            <Star className={cn("w-8 h-8", designation.color)} />
+            <span className={cn("text-5xl font-bold", designation.color)}>
+              {data.score}
+            </span>
+            <span className="text-2xl text-muted-foreground">/100</span>
+          </div>
         </div>
 
         {/* Risk Summary Card */}

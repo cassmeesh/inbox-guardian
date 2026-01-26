@@ -51,6 +51,19 @@ export interface SimulationState {
   incidentTriggered: boolean;
 }
 
+export type Designation = 
+  | 'security-champion'
+  | 'vigilant-defender'
+  | 'aware-employee'
+  | 'developing-awareness'
+  | 'needs-training';
+
+export interface DesignationInfo {
+  title: string;
+  description: string;
+  icon: string;
+}
+
 export interface SummaryData {
   finalRiskLevel: RiskLevel;
   riskScore: number;
@@ -61,4 +74,7 @@ export interface SummaryData {
   legitimateMisreported: number;
   strongBehaviors: string[];
   areasToWatch: string[];
+  score: number;
+  maxScore: number;
+  designation: Designation;
 }
