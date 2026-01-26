@@ -4,7 +4,7 @@ import { RiskMeter } from './RiskMeter';
 import { EmailItem } from './EmailItem';
 import { EmailDetail } from './EmailDetail';
 import { FeedbackModal } from './FeedbackModal';
-import { Mail, Inbox } from 'lucide-react';
+import { Mail, Inbox, Star } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface InboxScreenProps {
@@ -13,6 +13,8 @@ interface InboxScreenProps {
   completedEmails: string[];
   riskScore: number;
   riskLevel: RiskLevel;
+  currentScore: number;
+  maxScore: number;
   onAction: (emailId: string, action: ActionType) => ActionFeedback | null;
   onTimerExpire: (emailId: string) => ActionFeedback | null;
   onNext: () => void;
@@ -24,6 +26,8 @@ export function InboxScreen({
   completedEmails,
   riskScore,
   riskLevel,
+  currentScore,
+  maxScore,
   onAction,
   onTimerExpire,
   onNext
@@ -106,7 +110,24 @@ export function InboxScreen({
           "absolute md:relative inset-0 z-30 md:z-auto transition-transform duration-200",
           showMobileList ? "translate-x-0" : "-translate-x-full md:translate-x-0"
         )}>
-          <div className="p-4 border-b border-border">
+          <div className="p-4 border-b border-border space-y-3">
+            {/* Score Counter */}
+            <div className="bg-gradient-to-r from-primary/10 to-primary/5 rounded-lg p-3 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Star className="w-5 h-5 text-primary" />
+                <span className="text-sm font-medium text-foreground">Score</span>
+              </div>
+              <div className="flex items-baseline gap-1">
+                <span className={cn(
+                  "text-2xl font-bold transition-all duration-300",
+                  currentScore > 0 ? "text-primary" : currentScore < 0 ? "text-risk-critical" : "text-foreground"
+                )}>
+                  {currentScore}
+                </span>
+                <span className="text-sm text-muted-foreground">/ {maxScore}</span>
+              </div>
+            </div>
+            
             <RiskMeter score={riskScore} level={riskLevel} />
           </div>
           
