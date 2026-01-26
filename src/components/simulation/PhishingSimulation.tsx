@@ -16,6 +16,7 @@ export function PhishingSimulation() {
     nextEmail,
     getSummaryData,
     resetSimulation,
+    clearLastScoreChange,
     maxPossibleScore
   } = useSimulation();
 
@@ -36,6 +37,8 @@ export function PhishingSimulation() {
           riskLevel={riskLevel}
           currentScore={state.currentScore}
           maxScore={maxPossibleScore}
+          lastScoreChange={state.lastScoreChange}
+          onClearScoreChange={clearLastScoreChange}
           onAction={handleEmailAction}
           onTimerExpire={handleTimerExpiry}
           onNext={nextEmail}

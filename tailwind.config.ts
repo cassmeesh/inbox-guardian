@@ -105,11 +105,29 @@ export default {
           from: { width: "0%" },
           to: { width: "var(--meter-width)" },
         },
+        "score-pop": {
+          "0%": { 
+            opacity: "0", 
+            transform: "translateX(-50%) translateY(0) scale(0.5)" 
+          },
+          "20%": { 
+            opacity: "1", 
+            transform: "translateX(-50%) translateY(-20px) scale(1.2)" 
+          },
+          "40%": { 
+            transform: "translateX(-50%) translateY(-30px) scale(1)" 
+          },
+          "100%": { 
+            opacity: "0", 
+            transform: "translateX(-50%) translateY(-60px) scale(0.8)" 
+          },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "meter-fill": "meter-fill 0.8s cubic-bezier(0.4, 0, 0.2, 1)",
+        "score-pop": "score-pop 1.5s ease-out forwards",
       },
     },
   },
