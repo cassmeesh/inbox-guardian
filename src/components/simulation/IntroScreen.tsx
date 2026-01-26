@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Mail, AlertTriangle, Clock, Shield } from 'lucide-react';
 import { PhishingAnimation } from './PhishingAnimation';
+import phishingBg from '@/assets/phishing-bg.png';
 
 interface IntroScreenProps {
   onStart: () => void;
@@ -8,7 +9,17 @@ interface IntroScreenProps {
 
 export function IntroScreen({ onStart }: IntroScreenProps) {
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center p-4">
+    <div className="min-h-screen bg-background flex items-center justify-center p-4 relative overflow-hidden">
+      {/* Subtle background image */}
+      <div 
+        className="absolute inset-0 opacity-[0.04] pointer-events-none"
+        style={{
+          backgroundImage: `url(${phishingBg})`,
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'center',
+          backgroundSize: 'contain',
+        }}
+      />
       <div className="max-w-2xl w-full fade-in">
         {/* Header with Phishing Animation */}
         <div className="text-center mb-8">
