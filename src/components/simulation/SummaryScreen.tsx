@@ -1,6 +1,8 @@
+import { useEffect } from 'react';
 import { SummaryData, Designation } from '@/types/simulation';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import confetti from 'canvas-confetti';
 import { 
   Shield, 
   ShieldAlert, 
@@ -108,6 +110,67 @@ export function SummaryScreen({ data, onRestart }: SummaryScreenProps) {
   const Icon = config.icon;
   const designation = designationConfig[data.designation];
   const DesignationIcon = designation.icon;
+
+  const shouldCelebrate = data.designation === 'security-champion' || data.designation === 'vigilant-defender';
+
+  useEffect(() => {
+    if (!shouldCelebrate) return;
+
+    // Initial burst
+    const fireConfetti = () => {
+      // Left side
+      confetti({
+        particleCount: 50,
+        angle: 60,
+        spread: 55,
+        origin: { x: 0, y: 0.6 },
+        colors: data.designation === 'security-champion' 
+          ? ['#fbbf24', '#f59e0b', '#d97706', '#ffffff']
+          : ['#10b981', '#34d399', '#6ee7b7', '#ffffff']
+      });
+      
+      // Right side
+      confetti({
+        particleCount: 50,
+        angle: 120,
+        spread: 55,
+        origin: { x: 1, y: 0.6 },
+        colors: data.designation === 'security-champion' 
+          ? ['#fbbf24', '#f59e0b', '#d97706', '#ffffff']
+          : ['#10b981', '#34d399', '#6ee7b7', '#ffffff']
+      });
+    };
+
+    // Fire immediately
+    fireConfetti();
+
+    // Fire again after a short delay for extra celebration
+    const timeout1 = setTimeout(fireConfetti, 300);
+    const timeout2 = setTimeout(fireConfetti, 600);
+
+    // For security champion, add extra celebration
+    if (data.designation === 'security-champion') {
+      const timeout3 = setTimeout(() => {
+        confetti({
+          particleCount: 100,
+          spread: 100,
+          origin: { x: 0.5, y: 0.4 },
+          colors: ['#fbbf24', '#f59e0b', '#d97706', '#fef3c7', '#ffffff']
+        });
+      }, 900);
+      
+      return () => {
+        clearTimeout(timeout1);
+        clearTimeout(timeout2);
+        clearTimeout(timeout3);
+      };
+    }
+
+    return () => {
+      clearTimeout(timeout1);
+      clearTimeout(timeout2);
+    };
+  }, [shouldCelebrate, data.designation]);
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
