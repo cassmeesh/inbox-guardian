@@ -12,7 +12,7 @@ export function IntroScreen({ onStart }: IntroScreenProps) {
     <div className="min-h-screen bg-background flex items-center justify-center p-4 relative overflow-hidden">
       {/* Subtle background image */}
       <div 
-        className="absolute inset-0 opacity-[0.04] pointer-events-none"
+        className="absolute inset-0 opacity-10 pointer-events-none"
         style={{
           backgroundImage: `url(${phishingBg})`,
           backgroundRepeat: 'no-repeat',
