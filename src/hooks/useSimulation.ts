@@ -38,6 +38,7 @@ export function useSimulation() {
     riskScore: 0,
     maxRisk: 100,
     currentScore: 0,
+    lastScoreChange: null,
     actions: [],
     completedEmails: [],
     incidentTriggered: false
@@ -81,6 +82,7 @@ export function useSimulation() {
         ...prev,
         riskScore: newRiskScore,
         currentScore: prev.currentScore + scoreChange,
+        lastScoreChange: scoreChange,
         actions: [...prev.actions, { emailId, action }],
         completedEmails: [...prev.completedEmails, emailId],
         incidentTriggered: prev.incidentTriggered || shouldTriggerIncident,
@@ -89,6 +91,10 @@ export function useSimulation() {
     });
 
     return consequence;
+  }, []);
+
+  const clearLastScoreChange = useCallback(() => {
+    setState(prev => ({ ...prev, lastScoreChange: null }));
   }, []);
 
   const handleTimerExpiry = useCallback((emailId: string) => {
@@ -248,6 +254,7 @@ export function useSimulation() {
       riskScore: 0,
       maxRisk: 100,
       currentScore: 0,
+      lastScoreChange: null,
       actions: [],
       completedEmails: [],
       incidentTriggered: false
@@ -270,6 +277,7 @@ export function useSimulation() {
     nextEmail,
     getSummaryData,
     resetSimulation,
+    clearLastScoreChange,
     maxPossibleScore
   };
 }

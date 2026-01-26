@@ -4,6 +4,7 @@ import { RiskMeter } from './RiskMeter';
 import { EmailItem } from './EmailItem';
 import { EmailDetail } from './EmailDetail';
 import { FeedbackModal } from './FeedbackModal';
+import { ScoreIndicator } from './ScoreIndicator';
 import { Mail, Inbox, Star } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -15,6 +16,8 @@ interface InboxScreenProps {
   riskLevel: RiskLevel;
   currentScore: number;
   maxScore: number;
+  lastScoreChange: number | null;
+  onClearScoreChange: () => void;
   onAction: (emailId: string, action: ActionType) => ActionFeedback | null;
   onTimerExpire: (emailId: string) => ActionFeedback | null;
   onNext: () => void;
@@ -28,6 +31,8 @@ export function InboxScreen({
   riskLevel,
   currentScore,
   maxScore,
+  lastScoreChange,
+  onClearScoreChange,
   onAction,
   onTimerExpire,
   onNext
@@ -132,12 +137,16 @@ export function InboxScreen({
         )}>
           <div className="p-4 border-b border-border space-y-3">
             {/* Score Counter */}
-            <div className="bg-gradient-to-r from-primary/10 to-primary/5 rounded-lg p-3 flex items-center justify-between">
+            <div className="relative bg-gradient-to-r from-primary/10 to-primary/5 rounded-lg p-3 flex items-center justify-between overflow-visible">
               <div className="flex items-center gap-2">
                 <Star className="w-5 h-5 text-primary" />
                 <span className="text-sm font-medium text-foreground">Score</span>
               </div>
-              <div className="flex items-baseline gap-1">
+              <div className="flex items-baseline gap-1 relative">
+                <ScoreIndicator 
+                  scoreChange={lastScoreChange} 
+                  onAnimationComplete={onClearScoreChange} 
+                />
                 <span className={cn(
                   "text-2xl font-bold transition-all duration-300",
                   currentScore > 0 ? "text-primary" : currentScore < 0 ? "text-risk-critical" : "text-foreground"
