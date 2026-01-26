@@ -2,7 +2,37 @@ import { motion } from 'framer-motion';
 
 export function PhishingAnimation() {
   return (
-    <div className="relative w-32 h-32 mx-auto mb-4">
+    <div className="relative w-40 h-36 mx-auto mb-4">
+      {/* Water ripples background */}
+      <div className="absolute inset-x-0 bottom-0 h-20 overflow-hidden">
+        {[...Array(3)].map((_, i) => (
+          <motion.div
+            key={`ripple-${i}`}
+            className="absolute left-1/2 -translate-x-1/2 bottom-4 rounded-full border border-primary/20"
+            initial={{ width: 0, height: 0, opacity: 0 }}
+            animate={{ 
+              width: [0, 80 + i * 30, 120 + i * 40],
+              height: [0, 20 + i * 8, 30 + i * 10],
+              opacity: [0, 0.4, 0]
+            }}
+            transition={{
+              duration: 3,
+              repeat: Infinity,
+              delay: 1.8 + i * 0.6,
+              ease: "easeOut"
+            }}
+            style={{ translateX: '-50%' }}
+          />
+        ))}
+      </div>
+
+      {/* Water surface line */}
+      <motion.div
+        className="absolute left-0 right-0 top-14 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent"
+        initial={{ opacity: 0, scaleX: 0 }}
+        animate={{ opacity: 1, scaleX: 1 }}
+        transition={{ duration: 1, delay: 0.5 }}
+      />
       {/* Fishing line */}
       <motion.div
         className="absolute left-1/2 top-0 w-0.5 bg-muted-foreground/40 origin-top"
