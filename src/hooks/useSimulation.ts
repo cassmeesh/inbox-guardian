@@ -37,6 +37,7 @@ export function useSimulation() {
     currentEmailIndex: 0,
     riskScore: 0,
     maxRisk: 100,
+    currentScore: 0,
     actions: [],
     completedEmails: [],
     incidentTriggered: false
@@ -55,7 +56,22 @@ export function useSimulation() {
 
   const handleEmailAction = useCallback((emailId: string, action: ActionType) => {
     const consequence = emailConsequences[emailId]?.[action];
-    if (!consequence) return null;
+    const email = emails.find(e => e.id === emailId);
+    if (!consequence || !email) return null;
+
+    // Calculate score change for this action
+    let scoreChange = 0;
+    if (email.isPhishing) {
+      if (action === 'report') scoreChange = SCORE_POINTS.phishingReported;
+      else if (action === 'open') scoreChange = SCORE_POINTS.phishingOpened;
+      else if (action === 'delete') scoreChange = SCORE_POINTS.phishingDeleted;
+      else if (action === 'ignore') scoreChange = SCORE_POINTS.phishingIgnored;
+    } else {
+      if (action === 'report') scoreChange = SCORE_POINTS.legitimateReported;
+      else if (action === 'open') scoreChange = SCORE_POINTS.legitimateOpened;
+      else if (action === 'delete') scoreChange = SCORE_POINTS.legitimateDeleted;
+      else if (action === 'ignore') scoreChange = SCORE_POINTS.legitimateIgnored;
+    }
 
     setState(prev => {
       const newRiskScore = Math.max(0, Math.min(100, prev.riskScore + consequence.riskChange));
@@ -64,6 +80,7 @@ export function useSimulation() {
       return {
         ...prev,
         riskScore: newRiskScore,
+        currentScore: prev.currentScore + scoreChange,
         actions: [...prev.actions, { emailId, action }],
         completedEmails: [...prev.completedEmails, emailId],
         incidentTriggered: prev.incidentTriggered || shouldTriggerIncident,
@@ -228,11 +245,16 @@ export function useSimulation() {
       currentEmailIndex: 0,
       riskScore: 0,
       maxRisk: 100,
+      currentScore: 0,
       actions: [],
       completedEmails: [],
       incidentTriggered: false
     });
   }, []);
+
+  // Calculate max possible score for display
+  const maxPossibleScore = emails.filter(e => e.isPhishing).length * SCORE_POINTS.phishingReported + 
+    emails.filter(e => !e.isPhishing).length * SCORE_POINTS.legitimateOpened;
 
   return {
     state,
@@ -245,6 +267,7 @@ export function useSimulation() {
     continueFromIncident,
     nextEmail,
     getSummaryData,
-    resetSimulation
+    resetSimulation,
+    maxPossibleScore
   };
 }

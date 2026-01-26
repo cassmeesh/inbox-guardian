@@ -15,7 +15,8 @@ export function PhishingSimulation() {
     continueFromIncident,
     nextEmail,
     getSummaryData,
-    resetSimulation
+    resetSimulation,
+    maxPossibleScore
   } = useSimulation();
 
   const riskLevel = getRiskLevel(state.riskScore);
@@ -33,6 +34,8 @@ export function PhishingSimulation() {
           completedEmails={state.completedEmails}
           riskScore={state.riskScore}
           riskLevel={riskLevel}
+          currentScore={state.currentScore}
+          maxScore={maxPossibleScore}
           onAction={handleEmailAction}
           onTimerExpire={handleTimerExpiry}
           onNext={nextEmail}

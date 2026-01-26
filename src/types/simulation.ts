@@ -46,6 +46,7 @@ export interface SimulationState {
   currentEmailIndex: number;
   riskScore: number;
   maxRisk: number;
+  currentScore: number;
   actions: { emailId: string; action: ActionType }[];
   completedEmails: string[];
   incidentTriggered: boolean;
