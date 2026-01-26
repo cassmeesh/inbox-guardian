@@ -121,7 +121,25 @@ export function useSimulation() {
   }, []);
 
   const continueFromIncident = useCallback(() => {
-    setState(prev => ({ ...prev, phase: 'inbox' }));
+    setState(prev => {
+      // Find the next incomplete email when returning from incident
+      const nextIncompleteIndex = emails.findIndex(
+        email => !prev.completedEmails.includes(email.id)
+      );
+      
+      console.log('[continueFromIncident] Returning to inbox, next incomplete:', nextIncompleteIndex);
+      
+      if (nextIncompleteIndex === -1) {
+        // All emails done - go to summary
+        return { ...prev, phase: 'summary' };
+      }
+      
+      return { 
+        ...prev, 
+        phase: 'inbox',
+        currentEmailIndex: nextIncompleteIndex 
+      };
+    });
   }, []);
 
   const nextEmail = useCallback(() => {
