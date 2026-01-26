@@ -2,60 +2,24 @@ import { motion } from 'framer-motion';
 
 export function PhishingAnimation() {
   return (
-    <div className="relative w-32 h-32 mx-auto mb-4">
-      {/* Fishing line */}
+    <div className="relative w-32 h-24 mx-auto mb-4 flex items-center justify-center">
+      {/* Floating Fish */}
       <motion.div
-        className="absolute left-1/2 top-0 w-0.5 bg-muted-foreground/40 origin-top"
-        initial={{ height: 0 }}
-        animate={{ height: 48 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
-      />
-      
-      {/* Hook */}
-      <motion.svg
-        viewBox="0 0 24 24"
-        className="absolute left-1/2 -translate-x-1/2 w-6 h-6 text-muted-foreground"
-        initial={{ y: 0, opacity: 0 }}
-        animate={{ y: 44, opacity: 1 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
-      >
-        <path
-          d="M12 2 L12 8 Q12 14 8 16 Q4 18 4 22"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-        />
-      </motion.svg>
-
-      {/* Fish */}
-      <motion.div
-        className="absolute left-1/2 -translate-x-1/2"
-        initial={{ y: 120, x: 40, opacity: 0, rotate: 10 }}
-        animate={{ 
-          y: [120, 70, 75, 70, 75],
-          x: [40, 0, 0, 0, 0],
-          opacity: 1,
-          rotate: [10, 0, -5, 5, 0]
-        }}
-        transition={{ 
-          duration: 1.5, 
-          delay: 0.5,
-          times: [0, 0.4, 0.6, 0.8, 1],
-          ease: "easeOut"
-        }}
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
       >
         <motion.svg
           viewBox="0 0 64 40"
-          className="w-16 h-10"
+          className="w-20 h-12"
           animate={{ 
-            y: [0, -2, 0, 2, 0],
+            y: [0, -6, 0, 6, 0],
+            rotate: [0, -3, 0, 3, 0]
           }}
           transition={{
-            duration: 2,
+            duration: 3,
             repeat: Infinity,
-            ease: "easeInOut",
-            delay: 2
+            ease: "easeInOut"
           }}
         >
           {/* Fish body */}
@@ -70,9 +34,6 @@ export function PhishingAnimation() {
           {/* Fish eye */}
           <circle cx="16" cy="17" r="4" className="fill-background" />
           <circle cx="15" cy="16" r="2" className="fill-foreground" />
-          
-          {/* Fish mouth (hooked!) */}
-          <ellipse cx="8" cy="20" rx="2" ry="3" className="fill-background" />
           
           {/* Fins */}
           <path
@@ -92,32 +53,27 @@ export function PhishingAnimation() {
         </motion.svg>
       </motion.div>
 
-      {/* Water splash/bubbles effect */}
-      <motion.div
-        className="absolute left-1/2 -translate-x-1/2 top-16"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.5 }}
-      >
+      {/* Bubbles */}
+      <div className="absolute right-2 top-1/2 -translate-y-1/2">
         {[...Array(3)].map((_, i) => (
           <motion.div
             key={i}
             className="absolute w-2 h-2 rounded-full bg-primary/30"
-            style={{ left: (i - 1) * 16 }}
+            style={{ top: (i - 1) * 12 }}
             animate={{
-              y: [0, -10, -20],
+              x: [0, 10, 20],
               opacity: [0.6, 0.3, 0],
               scale: [0.5, 1, 0.5]
             }}
             transition={{
               duration: 2,
               repeat: Infinity,
-              delay: 2 + i * 0.3,
+              delay: i * 0.4,
               ease: "easeOut"
             }}
           />
         ))}
-      </motion.div>
+      </div>
     </div>
   );
 }
