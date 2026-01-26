@@ -15,7 +15,8 @@ import {
   Star,
   Eye,
   BookOpen,
-  Target
+  Target,
+  X
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -294,16 +295,27 @@ export function SummaryScreen({ data, onRestart }: SummaryScreenProps) {
           </p>
         </div>
 
-        {/* Restart */}
-        <Button 
-          onClick={onRestart} 
-          variant="outline"
-          size="lg" 
-          className="w-full gap-2"
-        >
-          <RotateCcw className="w-4 h-4" />
-          Try Again
-        </Button>
+        {/* Action Buttons */}
+        <div className="flex flex-col sm:flex-row gap-3">
+          <Button 
+            onClick={onRestart} 
+            variant="outline"
+            size="lg" 
+            className="flex-1 gap-2"
+          >
+            <RotateCcw className="w-4 h-4" />
+            Try Again
+          </Button>
+          <Button 
+            onClick={() => window.close()} 
+            variant="default"
+            size="lg" 
+            className="flex-1 gap-2"
+          >
+            <X className="w-4 h-4" />
+            End Simulation
+          </Button>
+        </div>
       </div>
     </div>
   );
