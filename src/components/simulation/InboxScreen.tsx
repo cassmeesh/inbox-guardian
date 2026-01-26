@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Email, ActionType, ActionFeedback, RiskLevel } from '@/types/simulation';
 import { RiskMeter } from './RiskMeter';
 import { EmailItem } from './EmailItem';
@@ -41,6 +41,16 @@ export function InboxScreen({
   const [feedback, setFeedback] = useState<ActionFeedback | null>(null);
   const [showMobileList, setShowMobileList] = useState(false);
 
+  // Sync selectedEmail with currentEmailIndex from hook
+  useEffect(() => {
+    if (!feedback) {
+      const nextEmail = emails[currentEmailIndex];
+      if (nextEmail && selectedEmail?.id !== nextEmail.id) {
+        setSelectedEmail(nextEmail);
+      }
+    }
+  }, [currentEmailIndex, emails, feedback, selectedEmail?.id]);
+
   const handleSelectEmail = (email: Email) => {
     if (!completedEmails.includes(email.id)) {
       setSelectedEmail(email);
@@ -66,28 +76,8 @@ export function InboxScreen({
 
   const handleContinue = () => {
     setFeedback(null);
-    
-    // The current email was just completed via onAction, which already added it to completedEmails
-    // But the prop may be stale, so we need to account for the current email
-    const currentEmailId = selectedEmail?.id;
-    
-    // Build the true list of completed emails (including current one that was just actioned)
-    const actualCompletedSet = new Set(completedEmails);
-    if (currentEmailId) {
-      actualCompletedSet.add(currentEmailId);
-    }
-    
-    // Find next incomplete email
-    const nextIncomplete = emails.find(
-      email => !actualCompletedSet.has(email.id)
-    );
-    
-    if (!nextIncomplete || actualCompletedSet.size >= emails.length) {
-      // All emails completed - go to summary
-      onNext();
-    } else {
-      setSelectedEmail(nextIncomplete);
-    }
+    // Delegate all navigation logic to the hook
+    onNext();
   };
 
   const remainingCount = emails.filter(e => !completedEmails.includes(e.id)).length;

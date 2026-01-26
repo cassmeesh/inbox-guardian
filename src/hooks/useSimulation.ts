@@ -130,9 +130,18 @@ export function useSimulation() {
       if (prev.completedEmails.length >= emails.length) {
         return { ...prev, phase: 'summary' };
       }
-      // Otherwise just increment the index (though this may not be used)
-      const nextIndex = prev.currentEmailIndex + 1;
-      return { ...prev, currentEmailIndex: nextIndex };
+      
+      // Find the next incomplete email index
+      const nextIncompleteIndex = emails.findIndex(
+        email => !prev.completedEmails.includes(email.id)
+      );
+      
+      if (nextIncompleteIndex === -1) {
+        // No incomplete emails - go to summary
+        return { ...prev, phase: 'summary' };
+      }
+      
+      return { ...prev, currentEmailIndex: nextIncompleteIndex };
     });
   }, []);
 
