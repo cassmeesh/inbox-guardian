@@ -13,6 +13,9 @@ export default {
       },
     },
     extend: {
+      fontFamily: {
+        sans: ['Inter', 'IBM Plex Sans', 'system-ui', 'sans-serif'],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -47,6 +50,32 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        warning: {
+          DEFAULT: "hsl(var(--warning))",
+          foreground: "hsl(var(--warning-foreground))",
+        },
+        success: {
+          DEFAULT: "hsl(var(--success))",
+          foreground: "hsl(var(--success-foreground))",
+        },
+        risk: {
+          low: "hsl(var(--risk-low))",
+          elevated: "hsl(var(--risk-elevated))",
+          high: "hsl(var(--risk-high))",
+          critical: "hsl(var(--risk-critical))",
+        },
+        email: {
+          bg: "hsl(var(--email-bg))",
+          hover: "hsl(var(--email-hover))",
+          selected: "hsl(var(--email-selected))",
+          unread: "hsl(var(--email-unread))",
+          border: "hsl(var(--email-border))",
+        },
+        timer: {
+          bg: "hsl(var(--timer-bg))",
+          fill: "hsl(var(--timer-fill))",
+          urgent: "hsl(var(--timer-urgent))",
+        },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
@@ -65,25 +94,22 @@ export default {
       },
       keyframes: {
         "accordion-down": {
-          from: {
-            height: "0",
-          },
-          to: {
-            height: "var(--radix-accordion-content-height)",
-          },
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
         },
         "accordion-up": {
-          from: {
-            height: "var(--radix-accordion-content-height)",
-          },
-          to: {
-            height: "0",
-          },
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
+        },
+        "meter-fill": {
+          from: { width: "0%" },
+          to: { width: "var(--meter-width)" },
         },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "meter-fill": "meter-fill 0.8s cubic-bezier(0.4, 0, 0.2, 1)",
       },
     },
   },
