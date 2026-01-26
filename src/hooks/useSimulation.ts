@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { SimulationState, ActionType, RiskLevel, SummaryData } from '@/types/simulation';
+import { SimulationState, ActionType, RiskLevel, SummaryData, Designation } from '@/types/simulation';
 import { emails, emailConsequences } from '@/data/emails';
 
 const RISK_THRESHOLDS = {
@@ -7,6 +7,26 @@ const RISK_THRESHOLDS = {
   elevated: 45,
   high: 70,
   critical: 100
+};
+
+// Points awarded for each action type
+const SCORE_POINTS = {
+  phishingReported: 20,      // Best action for phishing
+  phishingDeleted: 10,       // Acceptable for phishing
+  phishingIgnored: 0,        // Neutral - didn't click but didn't report
+  phishingOpened: -15,       // Bad - clicked on phishing
+  legitimateOpened: 10,      // Correct - engaged with legit email
+  legitimateIgnored: 5,      // Acceptable - didn't report falsely
+  legitimateDeleted: 0,      // Neutral
+  legitimateReported: -5,    // Minor penalty for false positive
+};
+
+const DESIGNATION_THRESHOLDS = {
+  'security-champion': 90,
+  'vigilant-defender': 70,
+  'aware-employee': 50,
+  'developing-awareness': 30,
+  'needs-training': 0,
 };
 
 const INCIDENT_THRESHOLD = 60;
@@ -99,6 +119,12 @@ export function useSimulation() {
     let phishingOpened = 0;
     let legitimateMisreported = 0;
     let correctActions = 0;
+    let totalScore = 0;
+
+    // Calculate max possible score
+    const maxScore = 
+      phishingEmails.length * SCORE_POINTS.phishingReported + 
+      legitEmails.length * SCORE_POINTS.legitimateOpened;
 
     state.actions.forEach(({ emailId, action }) => {
       const email = emails.find(e => e.id === emailId);
@@ -108,19 +134,43 @@ export function useSimulation() {
         if (action === 'report') {
           phishingReported++;
           correctActions++;
+          totalScore += SCORE_POINTS.phishingReported;
         } else if (action === 'open') {
           phishingOpened++;
+          totalScore += SCORE_POINTS.phishingOpened;
         } else if (action === 'delete') {
           correctActions++;
+          totalScore += SCORE_POINTS.phishingDeleted;
+        } else if (action === 'ignore') {
+          totalScore += SCORE_POINTS.phishingIgnored;
         }
       } else {
         if (action === 'report') {
           legitimateMisreported++;
-        } else if (action === 'open' || action === 'ignore') {
+          totalScore += SCORE_POINTS.legitimateReported;
+        } else if (action === 'open') {
           correctActions++;
+          totalScore += SCORE_POINTS.legitimateOpened;
+        } else if (action === 'ignore') {
+          correctActions++;
+          totalScore += SCORE_POINTS.legitimateIgnored;
+        } else if (action === 'delete') {
+          totalScore += SCORE_POINTS.legitimateDeleted;
         }
       }
     });
+
+    // Normalize score to percentage (0-100)
+    const normalizedScore = Math.max(0, Math.min(100, Math.round((totalScore / maxScore) * 100)));
+
+    // Determine designation based on score
+    const getDesignation = (score: number): Designation => {
+      if (score >= DESIGNATION_THRESHOLDS['security-champion']) return 'security-champion';
+      if (score >= DESIGNATION_THRESHOLDS['vigilant-defender']) return 'vigilant-defender';
+      if (score >= DESIGNATION_THRESHOLDS['aware-employee']) return 'aware-employee';
+      if (score >= DESIGNATION_THRESHOLDS['developing-awareness']) return 'developing-awareness';
+      return 'needs-training';
+    };
 
     const strongBehaviors: string[] = [];
     const areasToWatch: string[] = [];
@@ -165,7 +215,10 @@ export function useSimulation() {
       phishingOpened,
       legitimateMisreported,
       strongBehaviors,
-      areasToWatch
+      areasToWatch,
+      score: normalizedScore,
+      maxScore: 100,
+      designation: getDesignation(normalizedScore)
     };
   }, [state.actions, state.riskScore, getRiskLevel]);
 
