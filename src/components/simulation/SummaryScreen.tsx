@@ -178,16 +178,18 @@ export function SummaryScreen({ data, onRestart }: SummaryScreenProps) {
       <div className="max-w-2xl w-full fade-in">
         {/* Designation Header */}
         <div className="text-center mb-8">
-          <div className={cn(
-            "inline-flex items-center justify-center w-24 h-24 rounded-full mb-4 border-2",
-            designation.bgColor,
-            designation.borderColor
-          )}>
-            <DesignationIcon className={cn("w-12 h-12", designation.color)} />
+          <div className="flex flex-col items-center">
+            <div className={cn(
+              "flex items-center justify-center w-24 h-24 rounded-full mb-4 border-2",
+              designation.bgColor,
+              designation.borderColor
+            )}>
+              <DesignationIcon className={cn("w-12 h-12", designation.color)} />
+            </div>
+            <Badge className={cn("mb-3 px-4 py-1 text-sm", designation.bgColor, designation.color, "border", designation.borderColor)}>
+              {designation.title}
+            </Badge>
           </div>
-          <Badge className={cn("mb-3 px-4 py-1 text-sm", designation.bgColor, designation.color, "border", designation.borderColor)}>
-            {designation.title}
-          </Badge>
           <h1 className="text-2xl md:text-3xl font-bold text-foreground mb-2">
             Simulation Complete
           </h1>
