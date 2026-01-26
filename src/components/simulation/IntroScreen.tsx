@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button';
-import { Shield, Mail, AlertTriangle, Clock } from 'lucide-react';
+import { Mail, AlertTriangle, Clock, Shield } from 'lucide-react';
+import { PhishingAnimation } from './PhishingAnimation';
 
 interface IntroScreenProps {
   onStart: () => void;
@@ -9,11 +10,9 @@ export function IntroScreen({ onStart }: IntroScreenProps) {
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
       <div className="max-w-2xl w-full fade-in">
-        {/* Header */}
+        {/* Header with Phishing Animation */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-6">
-            <Shield className="w-8 h-8 text-primary" />
-          </div>
+          <PhishingAnimation />
           <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-3">
             Phishing Awareness Simulation
           </h1>
