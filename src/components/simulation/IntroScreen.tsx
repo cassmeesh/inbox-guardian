@@ -1,31 +1,68 @@
 import { Button } from '@/components/ui/button';
 import { Mail, AlertTriangle, Clock, Shield } from 'lucide-react';
 import { PhishingAnimation } from './PhishingAnimation';
+import { motion } from 'framer-motion';
 import phishingBg from '@/assets/phishing-bg.png';
+
 interface IntroScreenProps {
   onStart: () => void;
 }
-export function IntroScreen({
-  onStart
-}: IntroScreenProps) {
-  return <div className="min-h-screen bg-background flex items-center justify-center p-4 relative overflow-hidden">
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.1
+    }
+  }
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { 
+    opacity: 1, 
+    y: 0,
+    transition: { duration: 0.4 }
+  }
+};
+
+export function IntroScreen({ onStart }: IntroScreenProps) {
+  return (
+    <div className="min-h-screen bg-background flex items-center justify-center p-4 relative overflow-hidden">
       {/* Subtle background image */}
-      <div className="absolute inset-0 opacity-10 pointer-events-none" style={{
-      backgroundImage: `url(${phishingBg})`,
-      backgroundRepeat: 'no-repeat',
-      backgroundPosition: 'center',
-      backgroundSize: 'contain'
-    }} />
-      <div className="max-w-2xl w-full fade-in">
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 0.1 }}
+        transition={{ duration: 1 }}
+        className="absolute inset-0 pointer-events-none" 
+        style={{
+          backgroundImage: `url(${phishingBg})`,
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'center',
+          backgroundSize: 'contain'
+        }} 
+      />
+      
+      <motion.div 
+        className="max-w-2xl w-full"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
         {/* Header with Phishing Animation */}
-        <div className="text-center mb-8">
+        <motion.div className="text-center mb-8" variants={itemVariants}>
           <PhishingAnimation />
-          <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-3">Inbox Guardian </h1>
+          <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-3">Inbox Guardian</h1>
           <p className="text-muted-foreground text-lg">An interactive phishing awareness learning experience</p>
-        </div>
+        </motion.div>
 
         {/* Context Card */}
-        <div className="bg-card rounded-xl border border-border p-6 mb-8 inbox-shadow">
+        <motion.div 
+          className="bg-card rounded-xl border border-border p-6 mb-8 inbox-shadow"
+          variants={itemVariants}
+        >
           <div className="flex items-start gap-3 mb-4 pb-4 border-b border-border">
             <AlertTriangle className="w-5 h-5 text-warning mt-0.5" />
             <div>
@@ -73,18 +110,24 @@ export function IntroScreen({
               </div>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Disclaimer */}
-        <p className="text-center text-xs text-muted-foreground mb-6">
+        <motion.p 
+          className="text-center text-xs text-muted-foreground mb-6"
+          variants={itemVariants}
+        >
           This is a behavioral simulation, not a pass/fail assessment. 
           The goal is to help you make safer decisions.
-        </p>
+        </motion.p>
 
         {/* Start Button */}
-        <Button onClick={onStart} size="lg" className="w-full text-base h-12">
-          Begin Simulation
-        </Button>
-      </div>
-    </div>;
+        <motion.div variants={itemVariants}>
+          <Button onClick={onStart} size="lg" className="w-full text-base h-12">
+            Begin Simulation
+          </Button>
+        </motion.div>
+      </motion.div>
+    </div>
+  );
 }
