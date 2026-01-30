@@ -1,10 +1,8 @@
-import { useEffect } from 'react';
 import { ActionFeedback } from '@/types/simulation';
 import { Button } from '@/components/ui/button';
 import { CheckCircle, AlertTriangle, XCircle, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
-import { useSound } from '@/hooks/useSound';
 
 interface FeedbackModalProps {
   feedback: ActionFeedback;
@@ -45,13 +43,6 @@ const iconVariants = {
 export function FeedbackModal({ feedback, onContinue }: FeedbackModalProps) {
   const isPositive = feedback.isPositive;
   const isCritical = feedback.riskChange >= 15;
-  const { playDing } = useSound();
-
-  useEffect(() => {
-    if (isPositive) {
-      playDing();
-    }
-  }, [isPositive, playDing]);
 
   return (
     <motion.div 
