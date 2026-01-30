@@ -9,27 +9,27 @@ const RISK_THRESHOLDS = {
   critical: 100
 };
 
-// Points awarded for each action type
+// Points awarded for each action type (tuned for 5 emails)
 const SCORE_POINTS = {
-  phishingReported: 20,      // Best action for phishing
-  phishingDeleted: 10,       // Acceptable for phishing
+  phishingReported: 25,      // Best action for phishing
+  phishingDeleted: 15,       // Acceptable for phishing
   phishingIgnored: 0,        // Neutral - didn't click but didn't report
-  phishingOpened: -15,       // Bad - clicked on phishing
-  legitimateOpened: 10,      // Correct - engaged with legit email
-  legitimateIgnored: 5,      // Acceptable - didn't report falsely
-  legitimateDeleted: 0,      // Neutral
-  legitimateReported: -5,    // Minor penalty for false positive
+  phishingOpened: -20,       // Bad - clicked on phishing
+  legitimateOpened: 15,      // Correct - engaged with legit email
+  legitimateIgnored: 10,     // Acceptable - didn't report falsely
+  legitimateDeleted: 5,      // Neutral
+  legitimateReported: -10,   // Penalty for false positive
 };
 
 const DESIGNATION_THRESHOLDS = {
-  'security-champion': 90,
-  'vigilant-defender': 70,
-  'aware-employee': 50,
-  'developing-awareness': 30,
+  'security-champion': 85,
+  'vigilant-defender': 65,
+  'aware-employee': 45,
+  'developing-awareness': 25,
   'needs-training': 0,
 };
 
-const INCIDENT_THRESHOLD = 60;
+const INCIDENT_THRESHOLD = 50;
 
 export function useSimulation() {
   const [state, setState] = useState<SimulationState>({
