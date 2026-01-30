@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { SummaryData, Designation } from '@/types/simulation';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { motion } from 'framer-motion';
 import confetti from 'canvas-confetti';
 import { 
   Shield, 
@@ -24,6 +25,26 @@ interface SummaryScreenProps {
   data: SummaryData;
   onRestart: () => void;
 }
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.1
+    }
+  }
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { 
+    opacity: 1, 
+    y: 0,
+    transition: { duration: 0.4 }
+  }
+};
 
 const riskConfig = {
   low: {
@@ -175,17 +196,27 @@ export function SummaryScreen({ data, onRestart }: SummaryScreenProps) {
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
-      <div className="max-w-2xl w-full fade-in">
+      <motion.div 
+        className="max-w-2xl w-full"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
         {/* Designation Header */}
-        <div className="text-center mb-8">
+        <motion.div className="text-center mb-8" variants={itemVariants}>
           <div className="flex flex-col items-center">
-            <div className={cn(
-              "flex items-center justify-center w-24 h-24 rounded-full mb-4 border-2",
-              designation.bgColor,
-              designation.borderColor
-            )}>
+            <motion.div 
+              className={cn(
+                "flex items-center justify-center w-24 h-24 rounded-full mb-4 border-2",
+                designation.bgColor,
+                designation.borderColor
+              )}
+              initial={{ scale: 0, rotate: -180 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ type: "spring", stiffness: 150, damping: 15, delay: 0.2 }}
+            >
               <DesignationIcon className={cn("w-12 h-12", designation.color)} />
-            </div>
+            </motion.div>
             <Badge className={cn("mb-3 px-4 py-1 text-sm", designation.bgColor, designation.color, "border", designation.borderColor)}>
               {designation.title}
             </Badge>
@@ -196,26 +227,37 @@ export function SummaryScreen({ data, onRestart }: SummaryScreenProps) {
           <p className="text-muted-foreground max-w-md mx-auto">
             {designation.description}
           </p>
-        </div>
+        </motion.div>
 
         {/* Score Card */}
-        <div className={cn(
-          "rounded-xl border-2 p-6 mb-6 text-center",
-          designation.bgColor,
-          designation.borderColor
-        )}>
+        <motion.div 
+          className={cn(
+            "rounded-xl border-2 p-6 mb-6 text-center",
+            designation.bgColor,
+            designation.borderColor
+          )}
+          variants={itemVariants}
+        >
           <p className="text-sm text-muted-foreground mb-2">Your Score</p>
           <div className="flex items-center justify-center gap-2">
             <Star className={cn("w-8 h-8", designation.color)} />
-            <span className={cn("text-5xl font-bold", designation.color)}>
+            <motion.span 
+              className={cn("text-5xl font-bold", designation.color)}
+              initial={{ opacity: 0, scale: 0.5 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.4, type: "spring", stiffness: 150 }}
+            >
               {data.score}
-            </span>
+            </motion.span>
             <span className="text-2xl text-muted-foreground">/100</span>
           </div>
-        </div>
+        </motion.div>
 
         {/* Risk Summary Card */}
-        <div className="bg-card rounded-xl border border-border p-6 mb-6 inbox-shadow">
+        <motion.div 
+          className="bg-card rounded-xl border border-border p-6 mb-6 inbox-shadow"
+          variants={itemVariants}
+        >
           <div className="flex items-center justify-between mb-4 pb-4 border-b border-border">
             <div>
               <p className="text-sm text-muted-foreground mb-1">Final Risk Level</p>
@@ -235,27 +277,28 @@ export function SummaryScreen({ data, onRestart }: SummaryScreenProps) {
 
           {/* Stats Grid */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="text-center p-3 bg-muted rounded-lg">
-              <p className="text-2xl font-bold text-foreground">{data.totalEmails}</p>
-              <p className="text-xs text-muted-foreground">Messages</p>
-            </div>
-            <div className="text-center p-3 bg-muted rounded-lg">
-              <p className="text-2xl font-bold text-success">{data.phishingReported}</p>
-              <p className="text-xs text-muted-foreground">Phishing Reported</p>
-            </div>
-            <div className="text-center p-3 bg-muted rounded-lg">
-              <p className="text-2xl font-bold text-risk-critical">{data.phishingOpened}</p>
-              <p className="text-xs text-muted-foreground">Phishing Clicked</p>
-            </div>
-            <div className="text-center p-3 bg-muted rounded-lg">
-              <p className="text-2xl font-bold text-foreground">{data.correctActions}</p>
-              <p className="text-xs text-muted-foreground">Safe Actions</p>
-            </div>
+            {[
+              { value: data.totalEmails, label: 'Messages', color: 'text-foreground' },
+              { value: data.phishingReported, label: 'Phishing Reported', color: 'text-success' },
+              { value: data.phishingOpened, label: 'Phishing Clicked', color: 'text-risk-critical' },
+              { value: data.correctActions, label: 'Safe Actions', color: 'text-foreground' }
+            ].map((stat, i) => (
+              <motion.div 
+                key={stat.label}
+                className="text-center p-3 bg-muted rounded-lg"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 + i * 0.1, duration: 0.3 }}
+              >
+                <p className={cn("text-2xl font-bold", stat.color)}>{stat.value}</p>
+                <p className="text-xs text-muted-foreground">{stat.label}</p>
+              </motion.div>
+            ))}
           </div>
-        </div>
+        </motion.div>
 
         {/* Behaviors */}
-        <div className="grid md:grid-cols-2 gap-4 mb-8">
+        <motion.div className="grid md:grid-cols-2 gap-4 mb-8" variants={itemVariants}>
           {/* Strong Behaviors */}
           <div className="bg-card rounded-xl border border-border p-5">
             <div className="flex items-center gap-2 mb-4">
@@ -264,10 +307,16 @@ export function SummaryScreen({ data, onRestart }: SummaryScreenProps) {
             </div>
             <ul className="space-y-2">
               {data.strongBehaviors.map((behavior, i) => (
-                <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
+                <motion.li 
+                  key={i} 
+                  className="flex items-start gap-2 text-sm text-muted-foreground"
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.7 + i * 0.1, duration: 0.3 }}
+                >
                   <TrendingUp className="w-4 h-4 text-success mt-0.5 flex-shrink-0" />
                   {behavior}
-                </li>
+                </motion.li>
               ))}
             </ul>
           </div>
@@ -280,25 +329,37 @@ export function SummaryScreen({ data, onRestart }: SummaryScreenProps) {
             </div>
             <ul className="space-y-2">
               {data.areasToWatch.map((area, i) => (
-                <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
+                <motion.li 
+                  key={i} 
+                  className="flex items-start gap-2 text-sm text-muted-foreground"
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.7 + i * 0.1, duration: 0.3 }}
+                >
                   <AlertTriangle className="w-4 h-4 text-warning mt-0.5 flex-shrink-0" />
                   {area}
-                </li>
+                </motion.li>
               ))}
             </ul>
           </div>
-        </div>
+        </motion.div>
 
         {/* Key Message */}
-        <div className="bg-primary/5 rounded-xl p-5 mb-6 text-center">
+        <motion.div 
+          className="bg-primary/5 rounded-xl p-5 mb-6 text-center"
+          variants={itemVariants}
+        >
           <p className="text-foreground">
             <strong>Remember:</strong> Phishing defense is about reducing risk over time, 
             not eliminating it entirely. Stay vigilant and report suspicious messages.
           </p>
-        </div>
+        </motion.div>
 
         {/* Action Buttons */}
-        <div className="flex flex-col sm:flex-row gap-3">
+        <motion.div 
+          className="flex flex-col sm:flex-row gap-3"
+          variants={itemVariants}
+        >
           <Button 
             onClick={onRestart} 
             variant="outline"
@@ -317,8 +378,8 @@ export function SummaryScreen({ data, onRestart }: SummaryScreenProps) {
             <X className="w-4 h-4" />
             End Simulation
           </Button>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     </div>
   );
 }
